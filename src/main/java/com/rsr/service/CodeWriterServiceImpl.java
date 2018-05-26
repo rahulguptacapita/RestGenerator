@@ -16,8 +16,8 @@ public class CodeWriterServiceImpl {
 			CodeWriter restCodeWriter = new RestCodeWriter(table, request.getProjectname());
 			restCodeWriter.writeCode();
 			
-			//CodeWriter dbRestCodeWriter = new DBRestCodeWriter(table, request.getProjectname());
-			
+			CodeWriter dbRestCodeWriter = new DBRestCodeWriter(table, request.getProjectname());
+			dbRestCodeWriter.writeCode();
 		}
 		
 		CodeWriter dbEntityWriter = new DBEntityWriter(request.getProjectname());
