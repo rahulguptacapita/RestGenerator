@@ -27,6 +27,7 @@ public class Controller {
 	public ResponseEntity<Request> register(@RequestBody final Request request) throws IOException, SQLException {
 
 		request.validateRequest(tableDaoImpl);
+		
 		request.enrichRequest(tableDaoImpl);
 		
 		CopyProjectUtils.copyProjectTemplate(request.getProjectname());

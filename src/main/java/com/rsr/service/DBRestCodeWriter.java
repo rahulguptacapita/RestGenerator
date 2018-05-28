@@ -268,7 +268,7 @@ public class DBRestCodeWriter extends CodeWriter{
 				"		try {\r\n" + 
 				"			conn = getConnection();\r\n" + 
 				"			stat = conn.createStatement();\r\n" + 
-				"			String query = \"delete from  \" + tableName + \" where claim_id like ?\";\r\n" + 
+				"			String query = \"delete from  \" + tableName + \" where "+ table.getPrimaryKey() +" like ?\";\r\n" + 
 				"		    PreparedStatement pstmt = conn.prepareStatement(query);\r\n" + 
 				"		    pstmt.setString(1, id);\r\n" + 
 				"		    int executeUpdate = pstmt.executeUpdate();\r\n" + 
@@ -301,7 +301,7 @@ public class DBRestCodeWriter extends CodeWriter{
 				"			conn = getConnection();\r\n" + 
 				"			stat = conn.createStatement();\r\n" + 
 				"\r\n" + 
-				"			String query = \"select * from \" + tableName + \" where claim_id like ?\";\r\n" + 
+				"			String query = \"select * from \" + tableName + \" where "+ table.getPrimaryKey() +" like ?\";\r\n" + 
 				"		    PreparedStatement pstmt = conn.prepareStatement(query);\r\n" + 
 				"		    pstmt.setString(1, id);\r\n" + 
 				"		   \r\n" + 
