@@ -1,11 +1,6 @@
 package com.rsr.service;
 
 import static com.rsr.ServiceConstants.CONTROLLER;
-import static com.rsr.ServiceConstants.DELETE;
-import static com.rsr.ServiceConstants.GET;
-import static com.rsr.ServiceConstants.GETBYID;
-import static com.rsr.ServiceConstants.POST;
-import static com.rsr.ServiceConstants.PUT;
 import static com.rsr.ServiceConstants.REST;
 
 import org.springframework.context.annotation.Scope;
@@ -13,6 +8,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.rsr.domain.Method;
 import com.rsr.domain.Table;
 
 
@@ -39,6 +35,12 @@ public class RestCodeWriter extends CodeWriter {
 		pr.println("package com.rsr.rest;");
 	}
 
+	@Override
+	protected void writeImport() {
+		super.writeImport();
+		pr.println("import com.rsr.entity.DBEntity;\r\n" + 
+				"import com.rsr.entity."+ table.getTableClassName() + "Entity;");
+	}
 
 	@Override
 	public void writeClass() {
@@ -55,7 +57,7 @@ public class RestCodeWriter extends CodeWriter {
 	@Override
 	public void writeMethods() {
 		
-		for (String req : table.getRequests()) {
+		for (Method req : table.getRequests()) {
 			switch (req) {
 			case GET:
 				getwrite();

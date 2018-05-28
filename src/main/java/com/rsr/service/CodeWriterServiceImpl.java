@@ -22,9 +22,5 @@ public class CodeWriterServiceImpl {
 		
 		CodeWriter dbEntityWriter = new DBEntityWriter(request.getProjectname());
 		dbEntityWriter.writeCode();
-		
-		
-		
 	}
-
 }

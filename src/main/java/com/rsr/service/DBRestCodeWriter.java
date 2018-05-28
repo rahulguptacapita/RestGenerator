@@ -1,16 +1,13 @@
 package com.rsr.service;
 
-import com.rsr.domain.Table;
-import static com.rsr.ServiceConstants.DELETE;
-import static com.rsr.ServiceConstants.GET;
-import static com.rsr.ServiceConstants.GETBYID;
-import static com.rsr.ServiceConstants.POST;
-import static com.rsr.ServiceConstants.PUT;
-
-
 import static com.rsr.ServiceConstants.ENTITY;
 
+import com.rsr.domain.Method;
+import com.rsr.domain.Table;
+
 public class DBRestCodeWriter extends CodeWriter{
+
+	private static final String GET = null;
 
 	public DBRestCodeWriter(Table table, String projectName) {
 		super(table, projectName);
@@ -45,10 +42,10 @@ public class DBRestCodeWriter extends CodeWriter{
 		writePrepareQuery();
 		writeRandomPrimaryKeyFunction();
 		
-		for (String req : table.getRequests()) {
+		for (Method req : table.getRequests()) {
 			switch (req) {
 			case GET:
-				getwrite();
+				getWrite();
 				break;
 			case POST:
 				postWrite();
@@ -64,10 +61,64 @@ public class DBRestCodeWriter extends CodeWriter{
 			default:
 				break;
 			}
-			
+		}
+		
+		for(Method m : Method.values()) {
+			if(!table.getRequests().contains(m)) {
+				switch (m) {
+				case GET:
+					getWriteOverride();
+					break;
+				case POST:
+					postWriteOverride();
+					break;
+				case GETBYID:
+					getByIdWriteOverride();
+					break;
+				case DELETE:
+					deleteWriteOverride();
+					break;
+				case PUT:
+					break;
+				default:
+					break;
+				}
+			}
 		}
 	}
 	
+	private void deleteWriteOverride() {
+		pr.println("@Override\r\n" + 
+				"	public JSONObject deleteEntity(String tableName, String id) throws JSONException {\r\n" + 
+				"		// TODO Auto-generated method stub\r\n" + 
+				"		return null;\r\n" + 
+				"	}");
+	}
+
+	private void getByIdWriteOverride() {
+		pr.println("@Override\r\n" + 
+				"	public JSONObject getEntity(String tableName, String id) throws JSONException {\r\n" + 
+				"		// TODO Auto-generated method stub\r\n" + 
+				"		return null;\r\n" + 
+				"	}");
+	}
+
+	private void postWriteOverride() {
+		pr.println("@Override\r\n" + 
+				"	public void postEntity(String tableName, String primaryKey, JSONObject entity) throws JSONException {\r\n" + 
+				"		// TODO Auto-generated method stub\r\n" + 
+				"		\r\n" + 
+				"	}");
+	}
+
+	private void getWriteOverride() {
+		pr.println("@Override\r\n" + 
+				"	public JSONArray getEntities(String tableName) throws JSONException {\r\n" + 
+				"		// TODO Auto-generated method stub\r\n" + 
+				"		return null;\r\n" + 
+				"	}");
+	}
+
 	private void writeRandomPrimaryKeyFunction() {
 		pr.println("private String getRandomPrimaryKey() {\r\n" + 
 				"		Random rnd = new Random();\r\n" + 
@@ -171,7 +222,7 @@ public class DBRestCodeWriter extends CodeWriter{
 				"	}");
 	}
 
-	private void getwrite() {
+	private void getWrite() {
 		pr.println("	public JSONArray getEntities(String tableName) throws JSONException {\r\n" + 
 				"		Connection conn = null;\r\n" + 
 				"		Statement stat = null;\r\n" + 

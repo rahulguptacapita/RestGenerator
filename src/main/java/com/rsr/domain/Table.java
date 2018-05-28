@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,12 +16,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.rsr.TableDaoImpl;
 
 
-import static com.rsr.ServiceConstants.GET;
-import static com.rsr.ServiceConstants.GETBYID;
-import static com.rsr.ServiceConstants.PUT;
-import static com.rsr.ServiceConstants.DELETE;
-import static com.rsr.ServiceConstants.POST;
-
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "requests", "tablename" })
@@ -27,7 +23,7 @@ public class Table {
 
 
 	@JsonProperty("requests")
-	private List<String> requests = null;
+	private Set<Method> requests = null;
 	@JsonProperty("tablename")
 	private String tablename;
 
@@ -111,12 +107,16 @@ public class Table {
 	}
 
 	@JsonProperty("requests")
-	public List<String> getRequests() {
+	public Set<Method> getRequests() {
 		return requests;
+	}
+	
+	public Set<String> getRequestsNotPresent() {
+		return null;
 	}
 
 	@JsonProperty("requests")
-	public void setRequests(List<String> requests) {
+	public void setRequests(Set<Method> requests) {
 		this.requests = requests;
 	}
 
@@ -151,13 +151,20 @@ public class Table {
 			throw new RuntimeException(getTablename() + " does not exist ");
 		}
 		
-		for (String r : getRequests()) {
-			if(r.equalsIgnoreCase(GET) || r.equalsIgnoreCase(GETBYID) || r.equalsIgnoreCase(POST) || r.equalsIgnoreCase(PUT) || r.equalsIgnoreCase(DELETE)) {
-				continue;
-			}
-			throw new RuntimeException("Invalid method");
-		}
-
+		
+//		
+//		for (String r : getRequests()) {
+//			boolean b = true;
+//			for (Method method : Method.values()) {
+//				if(r.equalsIgnoreCase(method.name())) {
+//					b = false;
+//					break;
+//				}
+//			}
+//			if(b) {
+//				throw new RuntimeException("Invalid method");
+//			}
+//		}
 	}
 
 }
