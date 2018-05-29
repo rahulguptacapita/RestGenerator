@@ -19,12 +19,22 @@ public class CodeWriterServiceImpl {
 			CodeWriter dbRestCodeWriter = new DBRestCodeWriter(table, request.getProjectname());
 			dbRestCodeWriter.writeCode();
 			
-			CodeWriter jUnitCodeWriter = new JunitWriter(table, request.getProjectname());
+			CodeWriter jUnitCodeWriter = new JunitCodeWriter(table, request.getProjectname());
 			jUnitCodeWriter.writeCode();
 			
 		}
 		
 		CodeWriter dbEntityWriter = new DBEntityWriter(request.getProjectname());
 		dbEntityWriter.writeCode();
+
+//	CodeWriter pomWriter = new POMCodeWriter(request.getProjectname());
+		CodeWriter pomWriter = new POMCodeWriterWithSwagger(request.getProjectname());
+		pomWriter.writeCode();
+
+		CodeWriter runMeWriter = new RunMeCodeWriter(request.getProjectname());
+		runMeWriter.writeCode();
+		
+		
+		
 	}
 }

@@ -2,7 +2,6 @@ package com.rsr.service;
 
 import static com.rsr.ServiceConstants.CONTROLLER;
 import static com.rsr.ServiceConstants.DEST_DIR;
-import static com.rsr.ServiceConstants.ENTITY;
 import static com.rsr.ServiceConstants.REST;
 import static com.rsr.ServiceConstants.RSR_DIR;
 
@@ -93,8 +92,12 @@ public class RestCodeWriter extends CodeWriter {
 				"		\r\n" + 
 				"		DBEntity dbEntity = new "+ table.getTableClassName() +"Entity();\r\n" + 
 				"		dbEntity.validateEntity(entity, PRIMARY_KEY);\r\n" + 
-				"\r\n" + 
-				"		JSONObject getResponseEntity = dbEntity.getEntity(TABLE_NAME, id);\r\n" + 
+				"\r\n"); 
+		pr.println("    JSONObject getResponseEntity = dbEntity.getEntity(TABLE_NAME, id);\r\n" + 
+				"		if(getResponseEntity == null) {\r\n" + 
+				"			return Response.status(400).entity(\"\").build();\r\n" + 
+				"		}\r\n" + 
+				"		\r\n" + 
 				"		if(getResponseEntity.has(\"message\")) {\r\n" + 
 				"			String s = (String) getResponseEntity.get(\"message\");\r\n" + 
 				"			if(s.equalsIgnoreCase(\"no recored found\")) {\r\n" + 

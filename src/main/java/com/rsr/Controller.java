@@ -34,10 +34,10 @@ public class Controller {
 		
 		request.enrichRequest(tableDaoImpl);
 		
-		CopyProjectUtils.copyProjectTemplate(request.getProjectname());
+		ProjectUtils.copyProjectTemplate(request.getProjectname());
 		
 		writerServiceImpl.writeCode(request);
-		
+			
 		return new ResponseEntity<Request>(request, HttpStatus.OK);
 	}
 	

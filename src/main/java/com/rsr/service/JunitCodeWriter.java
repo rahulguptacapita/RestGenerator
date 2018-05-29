@@ -9,9 +9,9 @@ import com.rsr.domain.Method;
 import com.rsr.domain.Table;
 
 
-public class JunitWriter extends CodeWriter {
+public class JunitCodeWriter extends CodeWriter {
 
-	public JunitWriter(Table table, String projectName) {
+	public JunitCodeWriter(Table table, String projectName) {
 		super(table, projectName);
 	}
 
