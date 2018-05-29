@@ -1,6 +1,8 @@
 package com.rsr.service;
 
+import static com.rsr.ServiceConstants.DEST_DIR;
 import static com.rsr.ServiceConstants.ENTITY;
+import static com.rsr.ServiceConstants.RSR_DIR;
 
 import com.rsr.domain.Method;
 import com.rsr.domain.Table;
@@ -15,7 +17,8 @@ public class DBRestCodeWriter extends CodeWriter{
 
 	@Override
 	String getfilePath() {
-		return ENTITY + "\\" + getClassName();
+		return DEST_DIR + projectName + RSR_DIR + ENTITY + "\\" + getClassName() + ".java";
+		//return ENTITY + "\\" + getClassName();
 	}
 
 	@Override
@@ -39,8 +42,15 @@ public class DBRestCodeWriter extends CodeWriter{
 	public void writeMethods() {
 		
 		writeGetObjectForColumn();
+		
 		writePrepareQuery();
+		
+		writePrepareUpdateQuery();
+		
 		writeRandomPrimaryKeyFunction();
+		
+		writevalidateEntity();
+		
 		
 		for (Method req : table.getRequests()) {
 			switch (req) {
@@ -57,6 +67,7 @@ public class DBRestCodeWriter extends CodeWriter{
 				deleteWrite();
 				break;
 			case PUT:
+				putWrite();
 				break;
 			default:
 				break;
@@ -79,6 +90,7 @@ public class DBRestCodeWriter extends CodeWriter{
 					deleteWriteOverride();
 					break;
 				case PUT:
+					putWriteOverride();
 					break;
 				default:
 					break;
@@ -87,6 +99,91 @@ public class DBRestCodeWriter extends CodeWriter{
 		}
 	}
 	
+	private void writevalidateEntity() {
+		pr.println("public void validateEntity(JSONObject entity, String primaryKey) throws JSONException {\r\n" + 
+				"\r\n" + 
+				"		for ("+getClassName()+"Column column : "+getClassName()+"Column.values()) {\r\n" + 
+				"			if (primaryKey.equalsIgnoreCase(column.name())) {\r\n" + 
+				"				continue;\r\n" + 
+				"			}\r\n" + 
+				"			Object columnValue = entity.get(column.name());\r\n" + 
+				"			if (columnValue == null) {\r\n" + 
+				"				throw new RuntimeException(\"cannot find \" + column.name());\r\n" + 
+				"			}\r\n" + 
+				"		}\r\n" + 
+				"		if ("+getClassName()+"Column.values().length != entity.length()\r\n" + 
+				"				&& "+getClassName()+"Column.values().length - 1 == entity.length()) {\r\n" + 
+				"			throw new RuntimeException(\"More then enough parameter found \");\r\n" + 
+				"		}\r\n" + 
+				"	}");
+	}
+
+	private void putWriteOverride() {
+		pr.println("@Override\r\n" + 
+				"	public void putEntity(String tableName, String primaryKey, JSONObject entity, String id) throws JSONException {\r\n" + 
+				"		// TODO Auto-generated method stub\r\n" + 
+				"		\r\n" + 
+				"	}");
+	}
+
+	private void writePrepareUpdateQuery() {
+		pr.println("	private String prepareUpdateQuery(String tableName, String primaryKey, JSONObject entity, String id) throws JSONException {\r\n" + 
+				"		\r\n" + 
+				"		String sql = \"\";\r\n" + 
+				"		\r\n" + 
+				"		for ("+ getClassName() +"Column entityColumn : "+ getClassName() +"Column.values()) {\r\n" + 
+				"			if(entityColumn.name().equalsIgnoreCase(primaryKey)) {\r\n" + 
+				"				continue;\r\n" + 
+				"			}\r\n" + 
+				"			sql = sql + entityColumn.name() + \" = \" + \"?,\";\r\n" + 
+				"		}\r\n" + 
+				"		sql = sql.substring(0, sql.length() - 1);\r\n" + 
+				"		\r\n" + 
+				"		\r\n" + 
+				"		String whereClause = \" where \" + primaryKey + \" = \" + \"?\";\r\n" + 
+				"		String updateQuery = \"UPDATE \" + tableName + \" SET \" + sql + whereClause;\r\n" + 
+				"		return updateQuery;\r\n" + 
+				"	}");
+	}
+
+	private void putWrite() {
+		pr.println("@Override\r\n" + 
+				"	public void putEntity(String tableName, String primaryKey, JSONObject entity, String id) throws JSONException {\r\n" + 
+				"		\r\n" + 
+				"		Connection conn = null;\r\n" + 
+				"		Statement stat = null;\r\n" + 
+				"		ResultSet rs = null;\r\n" + 
+				"\r\n" + 
+				"		try {\r\n" + 
+				"			conn = getConnection();\r\n" + 
+				"			entity.remove(primaryKey);\r\n" + 
+				"			entity.put(primaryKey, id);\r\n" + 
+				"			\r\n" + 
+				"			String sql = prepareUpdateQuery(tableName, primaryKey, entity, id);\r\n" + 
+				"			System.out.println(sql);\r\n" + 
+				"			\r\n" + 
+				"			PreparedStatement pstmt = conn.prepareStatement(sql);\r\n" + 
+				"			 int index = 1;\r\n" + 
+				"\r\n" + 
+				"			 for ("+ getClassName() +"Column entityColumn : "+ getClassName() +"Column.values()) {\r\n" + 
+				"				 if(entityColumn.name().equalsIgnoreCase(primaryKey)) {\r\n" + 
+				"						continue;\r\n" + 
+				"				 }\r\n" + 
+				"				 pstmt.setObject(index, entity.get(entityColumn.name()));\r\n" + 
+				"				 index++;\r\n" + 
+				"			 }\r\n" + 
+				"			 \r\n" + 
+				"			pstmt.setObject(index, id);\r\n" + 
+				"			pstmt.execute();\r\n" + 
+				"\r\n" + 
+				"		} catch (SQLException sqle) {\r\n" + 
+				"			throw new RuntimeException(sqle.getMessage(), sqle);\r\n" + 
+				"		} finally {\r\n" + 
+				"			closeConn(conn, stat, rs);\r\n" + 
+				"		}\r\n" + 
+				"	}");
+	}
+
 	private void deleteWriteOverride() {
 		pr.println("@Override\r\n" + 
 				"	public JSONObject deleteEntity(String tableName, String id) throws JSONException {\r\n" + 

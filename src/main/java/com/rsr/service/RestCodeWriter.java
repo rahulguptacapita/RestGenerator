@@ -1,7 +1,10 @@
 package com.rsr.service;
 
 import static com.rsr.ServiceConstants.CONTROLLER;
+import static com.rsr.ServiceConstants.DEST_DIR;
+import static com.rsr.ServiceConstants.ENTITY;
 import static com.rsr.ServiceConstants.REST;
+import static com.rsr.ServiceConstants.RSR_DIR;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -22,7 +25,8 @@ public class RestCodeWriter extends CodeWriter {
 
 	@Override
 	String getfilePath() {
-		return REST + "\\" + getClassName();
+		return DEST_DIR + projectName + RSR_DIR + REST + "\\" + getClassName() + ".java";
+		//return REST + "\\" + getClassName();
 	}
 
 	@Override
@@ -54,8 +58,7 @@ public class RestCodeWriter extends CodeWriter {
 				"	private static final String PRIMARY_KEY = \"" + table.getPrimaryKey() + "\";");
 	}
 
-	@Override
-	public void writeMethods() {
+	@Override	public void writeMethods() {
 		
 		for (Method req : table.getRequests()) {
 			switch (req) {
@@ -72,12 +75,35 @@ public class RestCodeWriter extends CodeWriter {
 				deleteWrite();
 				break;
 			case PUT:
+				putWrite();
 				break;
 			default:
 				break;
 			}
 			
 		}
+	}
+
+	private void putWrite() {
+		pr.println("	@PUT\r\n" + 
+				"	@Path(\"/{id}\")\r\n" + 
+				"	@Consumes(MediaType.APPLICATION_JSON)\r\n" + 
+				"	@Produces(MediaType.APPLICATION_JSON)\r\n" + 
+				"	public Response putEntity(@PathParam(\"id\") String id, JSONObject entity) throws JsonGenerationException, JsonMappingException, IOException, JSONException {\r\n" + 
+				"		\r\n" + 
+				"		DBEntity dbEntity = new "+ table.getTableClassName() +"Entity();\r\n" + 
+				"		dbEntity.validateEntity(entity, PRIMARY_KEY);\r\n" + 
+				"\r\n" + 
+				"		JSONObject getResponseEntity = dbEntity.getEntity(TABLE_NAME, id);\r\n" + 
+				"		if(getResponseEntity.has(\"message\")) {\r\n" + 
+				"			String s = (String) getResponseEntity.get(\"message\");\r\n" + 
+				"			if(s.equalsIgnoreCase(\"no recored found\")) {\r\n" + 
+				"				return Response.status(200).entity(getResponseEntity).build();\r\n" + 
+				"			}\r\n" + 
+				"		}\r\n" + 
+				"		dbEntity.putEntity(TABLE_NAME, PRIMARY_KEY, entity, id);\r\n" + 
+				"		return Response.status(200).entity(getResponseEntity).build();\r\n" + 
+				"	}");
 	}
 
 	private void deleteWrite() {

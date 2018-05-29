@@ -18,6 +18,10 @@ public class CodeWriterServiceImpl {
 			
 			CodeWriter dbRestCodeWriter = new DBRestCodeWriter(table, request.getProjectname());
 			dbRestCodeWriter.writeCode();
+			
+			CodeWriter jUnitCodeWriter = new JunitWriter(table, request.getProjectname());
+			jUnitCodeWriter.writeCode();
+			
 		}
 		
 		CodeWriter dbEntityWriter = new DBEntityWriter(request.getProjectname());

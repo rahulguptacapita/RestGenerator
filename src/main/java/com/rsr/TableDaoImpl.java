@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -79,4 +81,17 @@ public class TableDaoImpl {
 		columns.add(column);
 	}
 
+	public List<String> getAllTableName() throws SQLException {
+		
+		Connection connection = ds.getConnection();
+		DatabaseMetaData md = connection.getMetaData();
+		ResultSet rs = md.getTables(null, null, "%", null);
+		List<String> jArray = new ArrayList<String>();
+		while (rs.next()) {
+			jArray.add(rs.getString(3));
+		}
+		rs.close();
+		connection.close();
+		return jArray;
+	}
 }

@@ -1,6 +1,8 @@
 package com.rsr.service;
 
+import static com.rsr.ServiceConstants.DEST_DIR;
 import static com.rsr.ServiceConstants.ENTITY;
+import static com.rsr.ServiceConstants.RSR_DIR;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
@@ -18,7 +20,8 @@ public class DBEntityWriter  extends CodeWriter{
 
 	@Override
 	String getfilePath() {
-		return  ENTITY + "\\" + getClassName();
+		return DEST_DIR + projectName + RSR_DIR + ENTITY + "\\" + getClassName() + ".java";
+		//return  ENTITY + "\\" + getClassName();
 	}
 	
 	@Override
@@ -179,29 +182,19 @@ public class DBEntityWriter  extends CodeWriter{
 				"		}\r\n" + 
 				"	}\r\n" + 
 				"    \r\n" + 
-				"    public void validateEntity(JSONObject entity, String primaryKey) throws JSONException {\r\n" + 
-				"    	\r\n" + 
-				"    	for (TstClaimHeaderEntityColumn tstClaimHeaderEntityColumn : TstClaimHeaderEntityColumn.values()) {\r\n" + 
-				"    		if(primaryKey.equalsIgnoreCase(tstClaimHeaderEntityColumn.name())) {\r\n" + 
-				"    			continue;\r\n" + 
-				"    		}\r\n" + 
-				"    		Object columnValue = entity.get(tstClaimHeaderEntityColumn.name());\r\n" + 
-				"    		if(columnValue == null) {\r\n" + 
-				"    			throw new RuntimeException(\"cannot find \" + tstClaimHeaderEntityColumn.name());\r\n" + 
-				"    		}\r\n" + 
-				"    	}\r\n" + 
-				"    	if(TstClaimHeaderEntityColumn.values().length != entity.length() && TstClaimHeaderEntityColumn.values().length - 1 == entity.length()) {\r\n" + 
-				"    		throw new RuntimeException(\"More then enough parameter found \");\r\n" + 
-				"    	}\r\n" + 
-				"    }\r\n" + 
-				"\r\n" + 
+				"    public abstract void validateEntity(JSONObject entity, String primaryKey) throws JSONException;\r\n" + 
+				"    \r\n" + 
 				"    public abstract JSONArray getEntities(String tableName) throws JSONException;\r\n" + 
 				"	public abstract void postEntity(String tableName, String primaryKey, JSONObject entity) throws JSONException;\r\n" + 
 				"	public abstract JSONObject deleteEntity(String tableName, String id) throws JSONException;\r\n" + 
-				"	public abstract JSONObject getEntity(String tableName, String id) throws JSONException;	\r\n" + 
+				"	public abstract JSONObject getEntity(String tableName, String id) throws JSONException;\r\n" + 
+				"\r\n" + 
+				"	public abstract void putEntity(String tableName, String primaryKey, JSONObject entity, String id) throws JSONException;\r\n" + 
 				"	\r\n" + 
 				"}\r\n" + 
 				"");
 		closePrinter();
+		
+		// table.getTableClassName() + "Entity"
 	}
 }

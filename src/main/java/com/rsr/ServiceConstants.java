@@ -7,6 +7,8 @@ public class ServiceConstants {
 
 	
 	public final static String RSR_DIR = "\\src\\main\\java\\com\\rsr";
+
+	public final static String TEST_RSR_DIR = "\\src\\test\\java\\com\\rsr";
 	
 	
 	public final static String REST = "\\rest";
@@ -17,6 +19,8 @@ public class ServiceConstants {
 	public final static String ENTITY_COLUMN = "EntityColumn";
 
 	public final static String CONTROLLER = "Controller";
+	
+	public final static String TESTS = "Tests";
 	
 	
 //	public static final String DELETE = "DELETE";

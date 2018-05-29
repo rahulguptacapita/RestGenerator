@@ -1,7 +1,9 @@
 package com.rsr.service;
 
+import static com.rsr.ServiceConstants.DEST_DIR;
 import static com.rsr.ServiceConstants.ENTITY;
 import static com.rsr.ServiceConstants.ENTITY_COLUMN;
+import static com.rsr.ServiceConstants.RSR_DIR;
 
 import java.io.PrintWriter;
 
@@ -24,7 +26,9 @@ public class ColumnCodeWriter extends CodeWriter {
 
 	@Override
 	String getfilePath() {
-		return  ENTITY + "\\" + getClassName();
+		return DEST_DIR + projectName + RSR_DIR + ENTITY + "\\" + getClassName() + ".java";
+		
+		//return  ENTITY + "\\" + getClassName();
 	}
 	
 	@Override

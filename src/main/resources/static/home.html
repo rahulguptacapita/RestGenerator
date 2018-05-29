@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<title>Auto Rest</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+
+
+<script src="customcodemirror.js"></script>
+<script src="cacheapicall.js"></script>
+<script src="home.js"></script>
+<script src="apiutils.js"></script>
+<style type="text/css">
+.header {
+	background-color: #9933cc;
+	color: #ffffff;
+	padding: 0.5%;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+.CodeMirror {
+	border-top: 1px solid #888;
+	border-bottom: 1px solid #888;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 100%;
+	float: left;
+	height: auto;
+}
+
+.compile {
+	width: 50%;
+	float: left;
+}
+
+.execute {
+	width: 50%, float: right;
+}
+
+.donotwrapcompile {
+	white-space: pre-line;
+}
+
+.donotwrapexecute {
+	white-space: pre-line;
+}
+</style>
+</head>
+<body>
+	<div ng-app="myapp" class="container-fluid">
+		<!-- id="outer" is very imp please do not remove it  -->
+		<div id="outer" ng-controller="HelloController">
+			<div class="page-header header text-center">
+				<h2>Auto Rest</h2>
+			</div>
+
+			<p class="text-success">
+				Project : <input name="projectname" id="projectname"
+					ng-model="projectname">
+			</p>
+
+
+			<p class="text-success">
+				Select Table : <select ng-model="selectedLanguage"
+					ng-change="selectedLanguageChanged(selectedLanguage, '{{selectedLanguage}}')"
+					class="dropdown">
+					<option ng-repeat="x in languages" value="{{x}}">{{x}}</option>
+				</select> 
+			</p>
+
+			<p class="text-success">	
+				Select Theme : <div ng-repeat="x in themes">
+				<label><input type="checkbox"
+					ng-model="methods.selected[x]"
+					ng-true-value="'{{x}}'" ng-false-value="''"/>{{x}}</label>
+			</div>
+			</p>
+
+			<br />
+			<!-- <h1 class="header">Online Compiler</h1> -->
+			<textarea id="myTextArea" style="display: none;"></textarea>
+			<button class="btn btn-success" ng-disabled="isDisabled"
+				ng-click="myfunc()">Run</button>
+
+			<!-- <div class="row">
+				<div class="col-sm-9 col-md-6" style="background-color: yellow;">
+					<h4>Compilation</h4>
+					<span class="donotwrapcompile bg-info" ng-bind="compile.output"></span>
+				</div>
+				<textarea style="width:500px; height: 200px;" ng-model="compile.output"></textarea>
+				<div class="col-sm-3 col-md-6" style="background-color: pink;">
+					<h4>Execution</h4>
+					<span class="donotwrapexecute bg-info" ng-bind="execute.output"></span>
+					<textarea style="width:500px; height: 200px;" ng-model="execute.output"></textarea>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-9 col-md-6" style="background-color: red;">
+					<h4>Error</h4>
+					<span class="donotwrapcompile bg-info" ng-bind="error"></span>
+				</div>
+			</div> -->
+		</div>
+</body>
+</html>

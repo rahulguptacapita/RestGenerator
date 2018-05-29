@@ -37,7 +37,8 @@ abstract public class CodeWriter {
 		
 		try {
 			
-			File file = new File(DEST_DIR + projectName + RSR_DIR + getfilePath() + ".java");
+//			File file = new File(DEST_DIR + projectName + RSR_DIR + getfilePath() + ".java");
+			File file = new File(getfilePath());
 			if (file.exists()) {
 				file.delete();
 			}
@@ -81,6 +82,7 @@ abstract public class CodeWriter {
 		pr.println("import javax.ws.rs.DELETE;");
 		pr.println("import javax.ws.rs.GET;");
 		pr.println("import javax.ws.rs.POST;");
+		pr.println("import javax.ws.rs.PUT;");
 		pr.println("import javax.ws.rs.Path;");
 		pr.println("import javax.ws.rs.PathParam;");
 		pr.println("import javax.ws.rs.Produces;");
