@@ -73,16 +73,25 @@
 			</p>
 
 
-			<p class="text-success">
+			<!-- <p class="text-success">
 				Select Table : <select ng-model="selectedLanguage"
 					ng-change="selectedLanguageChanged(selectedLanguage, '{{selectedLanguage}}')"
 					class="dropdown">
 					<option ng-repeat="x in languages" value="{{x}}">{{x}}</option>
 				</select> 
-			</p>
+			</p> -->
 
 			<p class="text-success">	
-				Select Theme : <div ng-repeat="x in themes">
+				Select Table : <div ng-repeat="x in languages">
+				<label><input type="checkbox"
+					ng-model="languagesSel.selected[x]"
+					ng-true-value="'{{x}}'" ng-false-value="''"/>{{x}}</label>
+			</div>
+			</p>
+
+
+			<p class="text-success">	
+				Select Methods : <div ng-repeat="x in themes">
 				<label><input type="checkbox"
 					ng-model="methods.selected[x]"
 					ng-true-value="'{{x}}'" ng-false-value="''"/>{{x}}</label>

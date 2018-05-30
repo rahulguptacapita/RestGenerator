@@ -81,11 +81,11 @@ public class TableDaoImpl {
 		columns.add(column);
 	}
 
-	public List<String> getAllTableName() throws SQLException {
+	public List<String> getAllTableName(String prefix) throws SQLException {
 		
 		Connection connection = ds.getConnection();
 		DatabaseMetaData md = connection.getMetaData();
-		ResultSet rs = md.getTables(null, null, "%", null);
+		ResultSet rs = md.getTables(null, null, prefix, null);
 		List<String> jArray = new ArrayList<String>();
 		while (rs.next()) {
 			jArray.add(rs.getString(3));

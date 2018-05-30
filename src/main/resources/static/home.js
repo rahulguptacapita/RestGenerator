@@ -12,11 +12,13 @@ angular.module("myapp", []).controller("HelloController", ['$scope', '$http', '$
     
     $scope.themes = ['GET', 'POST', 'PUT', 'DELETE', 'GETBYID'];
     
-    
     $scope.projectname = "TST100";
     
-    
     $scope.methods = {
+    		selected: {}
+    };
+    
+    $scope.languagesSel = {
     		selected: {}
     };
     
@@ -62,27 +64,34 @@ angular.module("myapp", []).controller("HelloController", ['$scope', '$http', '$
     	$scope.isDisabled = true;
         
     	var arr = Object.keys($scope.methods.selected);
+    	var lanSel = Object.keys($scope.languagesSel.selected);
     	
-//    	var nondup = $scope.methods.selected.filter(function(item, pos) {
-//    	    return a.indexOf(item) == pos;
-//    	})
+    	var a = [];
+    	
+    	lanSel.forEach(function (l) {
+    		a.push({
+    			"requests" : arr,
+				"tablename" : l
+    		})
+    	});
+    	
     	
     	var program = {
     		"projectname" : $scope.projectname,
-    		"tables" : [
-    			{
-    				"requests" : arr,
-    				"tablename" : $scope.selectedLanguage
-    			}
-    		]	
+    		"tables" : a
     	}
     	
         $http.post("run", program).then(function(response) {
         	$scope.isDisabled = false;
         	console.log('success');
+        	window.alert("Code generated Successfully");
+        	
         }, function(errResponse) {
         	$scope.isDisabled = false;
         	console.log('failure');
+        	
+        	window.alert("Something went wrong");
+        	
         });
     }
     ;

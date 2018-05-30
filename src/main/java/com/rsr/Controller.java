@@ -42,10 +42,14 @@ public class Controller {
 	}
 	
 	
+	
+	
+	
+	
 	@GetMapping(path = "/table", produces = "application/json")
 	public ResponseEntity<List<String>> register() throws IOException, SQLException {
 		
-		return new ResponseEntity<List<String>>(tableDaoImpl.getAllTableName(), HttpStatus.OK);
+		return new ResponseEntity<List<String>>(tableDaoImpl.getAllTableName("TST_%"), HttpStatus.OK);
 	}
 
 	

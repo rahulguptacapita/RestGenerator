@@ -105,7 +105,7 @@ public class RestCodeWriter extends CodeWriter {
 				"			}\r\n" + 
 				"		}\r\n" + 
 				"		dbEntity.putEntity(TABLE_NAME, PRIMARY_KEY, entity, id);\r\n" + 
-				"		return Response.status(200).entity(getResponseEntity).build();\r\n" + 
+				"		return Response.status(200).entity(entity).build();\r\n" + 
 				"	}");
 	}
 
@@ -116,8 +116,19 @@ public class RestCodeWriter extends CodeWriter {
 				"	public Response deleteEntity(@PathParam(\"id\") String id) throws JsonGenerationException, JsonMappingException, IOException, JSONException {\r\n" + 
 				"		\r\n" + 
 				"		DBEntity entity = new "+ table.getTableClassName() + "Entity" +"();\r\n" + 
-				"		JSONObject jsonEntity = entity.deleteEntity(TABLE_NAME, id);\r\n" + 
-				"		return Response.status(200).entity(jsonEntity).build();\r\n" + 
+				"       JSONObject delJsonEntity = entity.deleteEntity(TABLE_NAME, id);\r\n" + 
+				"		\r\n" + 
+				"		if(delJsonEntity == null) {\r\n" + 
+				"			return Response.status(204).entity(\"\").build();\r\n" + 
+				"		}\r\n" + 
+				"		\r\n" + 
+				"		if(delJsonEntity.has(\"message\")) {\r\n" + 
+				"			String s = (String) delJsonEntity.get(\"message\");\r\n" + 
+				"			if(s.equalsIgnoreCase(\"no recored found\")) {\r\n" + 
+				"				return Response.status(204).entity(delJsonEntity).build();\r\n" + 
+				"			}\r\n" + 
+				"		}\r\n" + 
+				"		return Response.status(200).entity(delJsonEntity).build();\r\n" + 
 				"	}");
 	}
 
@@ -131,7 +142,7 @@ public class RestCodeWriter extends CodeWriter {
 				"		DBEntity claimHeaderEntity = new "+ table.getTableClassName() + "Entity" + "();\r\n" + 
 				"		claimHeaderEntity.validateEntity(entity, PRIMARY_KEY);\r\n" + 
 				"		claimHeaderEntity.postEntity(TABLE_NAME, PRIMARY_KEY, entity);\r\n" + 
-				"		return Response.status(200).entity(entity).build();\r\n" + 
+				"		return Response.status(201).entity(entity).build();\r\n" + 
 				"	}");
 	}
 
@@ -142,8 +153,20 @@ public class RestCodeWriter extends CodeWriter {
 				"	public Response getEntity(@PathParam(\"id\") String id) throws JsonGenerationException, JsonMappingException, IOException, JSONException {\r\n" + 
 				"		\r\n" + 
 				"		DBEntity entity = new "+ table.getTableClassName() + "Entity" +"();\r\n" + 
-				"		JSONObject jsonEntity = entity.getEntity(TABLE_NAME, id);\r\n" + 
-				"		return Response.status(200).entity(jsonEntity).build();\r\n" + 
+				"	    JSONObject getResponseEntity = entity.getEntity(TABLE_NAME, id);\r\n" + 
+				"		\r\n" + 
+				"		if(getResponseEntity == null) {\r\n" + 
+				"			return Response.status(204).entity(\"\").build();\r\n" + 
+				"		}\r\n" + 
+				"		\r\n" + 
+				"		if(getResponseEntity.has(\"message\")) {\r\n" + 
+				"			String s = (String) getResponseEntity.get(\"message\");\r\n" + 
+				"			if(s.equalsIgnoreCase(\"no recored found\")) {\r\n" + 
+				"				return Response.status(400).entity(getResponseEntity).build();\r\n" + 
+				"			}\r\n" + 
+				"		}\r\n" + 
+				"\r\n" + 
+				"		return Response.status(200).entity(getResponseEntity).build();\r\n" + 
 				"	}");
 	}
 

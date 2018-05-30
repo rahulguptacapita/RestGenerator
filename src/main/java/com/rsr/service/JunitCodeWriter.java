@@ -53,7 +53,7 @@ public class JunitCodeWriter extends CodeWriter {
 	public void writeVariables() {
 		
 		pr.println("private static final String RESTPATH = \""+ table.getRestPath() + "\";\r\n" + 
-				"	private static final String BASEURL = \"http://localhost:8080/RESTfulExample/rest/\";"
+				"	private static final String BASEURL = \"http://localhost:8080/"+ projectName +"/rest/\";"
 				+ "private static final String ID = \"\";");
 	}
 
