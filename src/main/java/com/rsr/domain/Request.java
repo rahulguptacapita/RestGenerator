@@ -1,6 +1,9 @@
 
 package com.rsr.domain;
 
+import static com.rsr.ServiceConstants.DEST_DIR;
+
+import java.io.File;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +27,22 @@ public class Request {
     private String projectname;
     @JsonProperty("tables")
     private List<Table> tables = null;
-    @JsonIgnore
+    
+    @JsonProperty("projectpath")
+    private String projectPath;
+    
+    @JsonProperty("projectpath")
+    public String getProjectPath() {
+		return projectPath;
+	}
+
+    @JsonProperty("projectpath")
+	public void setProjectPath() {
+    	File destFolder = new File(DEST_DIR + getProjectname());
+		this.projectPath = destFolder.getAbsolutePath();
+	}
+
+	@JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("projectname")
@@ -82,6 +100,7 @@ public class Request {
 	}
 
 	public void enrichRequest(TableDaoImpl tableDaoImpl) throws SQLException {
+		setProjectPath();
 		for (Table table : getTables()) {
 			table.setPrimaryKey(tableDaoImpl);
 			table.upperCaseTablename();

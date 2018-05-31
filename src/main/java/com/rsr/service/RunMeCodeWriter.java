@@ -4,8 +4,11 @@ import static com.rsr.ServiceConstants.DEST_DIR;
 
 public class RunMeCodeWriter extends CodeWriter {
 
-	public RunMeCodeWriter(String projectName) {
+	private String projectPath;
+
+	public RunMeCodeWriter(String projectName, String projectPath) {
 		super(projectName);
+		this.projectPath = projectPath;
 	}
 
 	@Override
@@ -35,6 +38,7 @@ public class RunMeCodeWriter extends CodeWriter {
 	public void writeCode() {
 		pr.println("\r\n" + 
 				"SET JAVA_HOME=\"C:\\Progra~1\\Java\\jdk1.8.0_161\"\r\n" + 
+				"cd " + projectPath + "\r\n"+
 				"mvn clean install\r\n" + 
 				"");
 		closePrinter();

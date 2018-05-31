@@ -31,7 +31,7 @@ public class CodeWriterServiceImpl {
 		CodeWriter pomWriter = new POMCodeWriterWithSwagger(request.getProjectname());
 		pomWriter.writeCode();
 
-		CodeWriter runMeWriter = new RunMeCodeWriter(request.getProjectname());
+		CodeWriter runMeWriter = new RunMeCodeWriter(request.getProjectname(), request.getProjectPath());
 		runMeWriter.writeCode();
 		
 		

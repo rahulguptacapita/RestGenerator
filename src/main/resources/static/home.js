@@ -8,6 +8,8 @@ angular.module("myapp", []).controller("HelloController", ['$scope', '$http', '$
     	console.log('will do nothing');
     });
     
+    $scope.buildDisabled = true;
+    
     $scope.selectedLanguage = "";
     
     $scope.themes = ['GET', 'POST', 'PUT', 'DELETE', 'GETBYID'];
@@ -20,7 +22,10 @@ angular.module("myapp", []).controller("HelloController", ['$scope', '$http', '$
     
     $scope.languagesSel = {
     		selected: {}
-    };
+	};
+	
+
+	$scope.logs = "";
     
     
     var program = {
@@ -59,12 +64,62 @@ angular.module("myapp", []).controller("HelloController", ['$scope', '$http', '$
         changeCode(code);
     }
 
+    
+    function makeChoicesNull() {
+    	$scope.methods.selected = {};
+    	$scope.languagesSel.selected = {};
+    }
+    
+    
+    $scope.myBuildFunc = function() {
+
+    	$http.get("builddeploy"+ "?buildurl="+ $scope.buildCodePath).then(function(response) {
+    		console.log(' started building ');
+    	}, function(errResponse) {
+    		console.log(' error on building ');
+    	});
+	}
+	
+
+	setInterval(function(){
+		
+		$http.get("output").then(function(response) {
+			$scope.logs = response.data.message;
+    	}, function(errResponse) {
+			$scope.logs = errResponse.data.message;
+    		console.log(' error on building ');
+    	});
+
+	}, 3000);
+
+
+    
+    
     $scope.myfunc = function() {
     	
-    	$scope.isDisabled = true;
         
     	var arr = Object.keys($scope.methods.selected);
     	var lanSel = Object.keys($scope.languagesSel.selected);
+    	
+    	if(!$scope.projectname || 0 === $scope.projectname.length ) {
+    		makeChoicesNull();
+    		window.alert("project name is empty");
+    		return;
+    	}
+    	
+    	if(arr.length == 0) {
+    		makeChoicesNull();
+    		window.alert("No method selected ");
+    		return;
+    	}
+    	
+    	if(lanSel.length == 0) {
+    		makeChoicesNull();
+    		window.alert("No table selected");
+    		return ;
+    	}
+    	
+    	$scope.isDisabled = true;
     	
     	var a = [];
     	
@@ -83,17 +138,18 @@ angular.module("myapp", []).controller("HelloController", ['$scope', '$http', '$
     	
         $http.post("run", program).then(function(response) {
         	$scope.isDisabled = false;
+        	$scope.buildDisabled = false;
+        	$scope.buildCodePath = response.data.projectname;
         	console.log('success');
+        	makeChoicesNull();
         	window.alert("Code generated Successfully");
         	
         }, function(errResponse) {
         	$scope.isDisabled = false;
         	console.log('failure');
-        	
-        	window.alert("Something went wrong");
-        	
+        	makeChoicesNull();
+        	window.alert("Something went wrong, error : " + errResponse);
         });
-    }
-    ;
+    };
 }
 ]);

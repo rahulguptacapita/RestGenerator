@@ -30,7 +30,9 @@ abstract public class CodeWriter {
 	}
 
 	protected final void closePrinter() {
-		pr.close();
+		if(pr != null) {
+			pr.close();
+		}
 	}
 
 	public final void createFileAndInitializePrinter() {

@@ -191,6 +191,135 @@ public class DBEntityWriter  extends CodeWriter{
 				"\r\n" + 
 				"	public abstract void putEntity(String tableName, String primaryKey, JSONObject entity, String id) throws JSONException;\r\n" + 
 				"	\r\n" + 
+				"	\r\n" + 
+				"	\r\n" + 
+				"	public static int getNextNo(Connection conn, String tableName, String columnName, String columnCaption) {\r\n" + 
+				"\r\n" + 
+				"        String lastNoAsString = getLastNo(conn, tableName, columnName);\r\n" + 
+				"\r\n" + 
+				"        int lastNoInDb = 0;\r\n" + 
+				"        if (lastNoAsString == null) {\r\n" + 
+				"            addLastNoSetting(conn, tableName, columnName, columnCaption);\r\n" + 
+				"        } else if (lastNoAsString.length() > 0) {\r\n" + 
+				"            lastNoInDb = Integer.parseInt(lastNoAsString);\r\n" + 
+				"        }\r\n" + 
+				"\r\n" + 
+				"        for (int i = 1; i <= 100; i++) {\r\n" + 
+				"\r\n" + 
+				"            int nextNo = lastNoInDb + 1;\r\n" + 
+				"\r\n" + 
+				"            if (noHasBeenUsed(conn, tableName, columnName, nextNo)) {\r\n" + 
+				"                nextNo = getMaxNo(conn, tableName, columnName) + 1;\r\n" + 
+				"            }\r\n" + 
+				"\r\n" + 
+				"            if (setLastNo(conn, tableName, columnName, lastNoInDb, nextNo)) {\r\n" + 
+				"                return nextNo;\r\n" + 
+				"    		} else {\r\n" + 
+				"    			lastNoInDb = Integer.parseInt(getLastNo(conn, tableName, columnName));\r\n" + 
+				"            }\r\n" + 
+				"\r\n" + 
+				"        }\r\n" + 
+				"        throw new RuntimeException(\"Failed to get next number after 100 attempts\");\r\n" + 
+				"    }\r\n" + 
+				"	\r\n" + 
+				"	   private static boolean setLastNo(Connection conn, String tableName, String columnName, int lastNo, int nextNo) {\r\n" + 
+				"\r\n" + 
+				"	        Statement stat = null;\r\n" + 
+				"	        try {\r\n" + 
+				"	            String sql = \"update cau_settings set setting_value = '\" + nextNo + \"' where section = 'LAST_USED_NOS' and setting = '\"\r\n" + 
+				"	                    + tableName + \".\" + columnName + \"' and setting_value = '\" + lastNo + \"'\";\r\n" + 
+				"	            stat = conn.createStatement();\r\n" + 
+				"	            if (stat.executeUpdate(sql) == 1) {\r\n" + 
+				"	                return true;\r\n" + 
+				"	            }\r\n" + 
+				"	        } catch (SQLException e) {\r\n" + 
+				"	            throw new RuntimeException(e.getMessage(), e);\r\n" + 
+				"	        } finally {\r\n" + 
+				"	        }\r\n" + 
+				"	        return false;\r\n" + 
+				"	    }\r\n" + 
+				"	\r\n" + 
+				"    private static int getMaxNo(Connection conn, String tableName, String columnName) {\r\n" + 
+				"\r\n" + 
+				"        Statement stat = null;\r\n" + 
+				"        ResultSet rs = null;\r\n" + 
+				"        try {\r\n" + 
+				"            stat = conn.createStatement();\r\n" + 
+				"            rs = stat.executeQuery(\"select max(\" + columnName + \") from \" + tableName);\r\n" + 
+				"            rs.next();\r\n" + 
+				"            return rs.getInt(1);\r\n" + 
+				"        } catch (SQLException e) {\r\n" + 
+				"            throw new RuntimeException(e.getMessage(), e);\r\n" + 
+				"        } finally {\r\n" + 
+				"        }\r\n" + 
+				"\r\n" + 
+				"    }\r\n" + 
+				"\r\n" + 
+				"    private static boolean noHasBeenUsed(Connection conn, String tableName, String columnName, int nextNo) {\r\n" + 
+				"        boolean noHasBeenUsed = false;\r\n" + 
+				"        Statement stat = null;\r\n" + 
+				"        ResultSet rs = null;\r\n" + 
+				"        try {\r\n" + 
+				"            String sql = \"select count(*) from \" + tableName + \" where \" + columnName + \" = \" + nextNo;\r\n" + 
+				"            stat = conn.createStatement();\r\n" + 
+				"            rs = stat.executeQuery(sql);\r\n" + 
+				"            rs.next();\r\n" + 
+				"            if (rs.getInt(1) > 0) {\r\n" + 
+				"                noHasBeenUsed = true;\r\n" + 
+				"            }\r\n" + 
+				"\r\n" + 
+				"        } catch (SQLException e) {\r\n" + 
+				"            throw new RuntimeException(e.getMessage(), e);\r\n" + 
+				"        } finally {\r\n" + 
+				"        }\r\n" + 
+				"        return noHasBeenUsed;\r\n" + 
+				"    }\r\n" + 
+				"\r\n" + 
+				"    private static void addLastNoSetting(Connection conn, String tableName, String columnName, String columnCaption) {\r\n" + 
+				"        Statement stat = null;\r\n" + 
+				"\r\n" + 
+				"        try {\r\n" + 
+				"            String sql = \"insert into cau_settings (section, setting, setting_seq, setting_value, setting_prompts, setting_descr, setting_format, application_id) \"\r\n" + 
+				"                    + \"values ('LAST_USED_NOS','\"\r\n" + 
+				"                    + tableName\r\n" + 
+				"                    + \".\"\r\n" + 
+				"                    + columnName\r\n" + 
+				"                    + \"',0,'0','\"\r\n" + 
+				"                    + columnCaption\r\n" + 
+				"                    + \"','Last Used Number for \"\r\n" + 
+				"                    + columnCaption + \"','', '\" + tableName.substring(0, 3) + \"')\";\r\n" + 
+				"            stat = conn.createStatement();\r\n" + 
+				"            stat.executeUpdate(sql);\r\n" + 
+				"        } catch (SQLException e) {\r\n" + 
+				"            throw new RuntimeException(e.getMessage(), e);\r\n" + 
+				"        } finally {\r\n" + 
+				"        	//closeConn(Connection conn, Statement stat, ResultSet rs)\r\n" + 
+				"        }\r\n" + 
+				"    }\r\n" + 
+				"	\r\n" + 
+				"	   private static String getLastNo(Connection conn, String tableName, String columnName) {\r\n" + 
+				"	        String lastNo = null;\r\n" + 
+				"	        Statement stat = null;\r\n" + 
+				"	        ResultSet rs = null;\r\n" + 
+				"	        try {\r\n" + 
+				"	            String sql = \"select setting_value from cau_settings where section = 'LAST_USED_NOS' and setting = '\" + tableName + \".\"\r\n" + 
+				"	                    + columnName + \"'\";\r\n" + 
+				"	            stat = conn.createStatement();\r\n" + 
+				"	            rs = stat.executeQuery(sql);\r\n" + 
+				"	            if (rs.next()) {\r\n" + 
+				"	                lastNo = rs.getString(\"setting_value\");\r\n" + 
+				"	                if (lastNo == null) {\r\n" + 
+				"	                    lastNo = \"\";\r\n" + 
+				"	                }\r\n" + 
+				"	            }\r\n" + 
+				"	        } catch (SQLException e) {\r\n" + 
+				"	            throw new RuntimeException(e.getMessage(), e);\r\n" + 
+				"	        } finally {\r\n" + 
+				"	        }\r\n" + 
+				"	        return lastNo;\r\n" + 
+				"	    }\r\n" + 
+				"\r\n" + 
+				"	\r\n" + 
 				"}\r\n" + 
 				"");
 		closePrinter();

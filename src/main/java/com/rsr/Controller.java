@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.rsr.domain.Request;
-import com.rsr.domain.Table;
 import com.rsr.service.CodeWriterServiceImpl;
+import com.rsr.service.builddeploy.BuildDeployService;
+import com.rsr.service.builddeploy.BuildDeployServiceExec;
+import com.rsr.service.builddeploy.BuildDeployServiceImpl;
 
 @RestController
 public class Controller {
@@ -26,6 +30,8 @@ public class Controller {
 	
 	@Autowired
 	CodeWriterServiceImpl writerServiceImpl;
+	
+	BuildDeployServiceExec buildDeployServiceImpl = null;
 		
 	@PostMapping(path = "/run", consumes = "application/json", produces = "application/json")
 	public ResponseEntity<Request> register(@RequestBody final Request request) throws IOException, SQLException {
@@ -41,14 +47,51 @@ public class Controller {
 		return new ResponseEntity<Request>(request, HttpStatus.OK);
 	}
 	
+	@GetMapping(path = "/builddeploy", produces = "application/json")
+	public ResponseEntity<JsonNode> buildAndDeploy(@RequestParam("buildurl") String buildUrl) throws IOException, SQLException {
+		
+		ObjectMapper mapper = new ObjectMapper();
+
+		JsonNode childNode1 = mapper.createObjectNode();
+		((ObjectNode) childNode1).put("message", "hello");
+		
+		buildDeployServiceImpl = new BuildDeployServiceImpl(buildUrl);
+		
+		Thread t = new Thread(buildDeployServiceImpl);
+		t.start();
+		
+		return new ResponseEntity<JsonNode>(childNode1, HttpStatus.OK);
+	}
 	
+	
+	@GetMapping(path = "/output", produces = "application/json")
+	public ResponseEntity<JsonNode> getOutput() throws IOException, SQLException {
+
+		if(buildDeployServiceImpl == null) {
+			return null; 
+		}
+		
+	//	System.out.println(buildDeployServiceImpl.getOutput());
+	//	JSONObject jObjec = new JSONObject().put("message", "hello");
+	//	jObjec.put("message", buildDeployServiceImpl.getOutput());
+		
+	//	String br = "{";
+		
+		// System.out.println(br + "\"message\":"  + "\"" + buildDeployServiceImpl.getOutput() + "\"}");
+		
+		ObjectMapper mapper = new ObjectMapper();
+
+		JsonNode childNode1 = mapper.createObjectNode();
+		((ObjectNode) childNode1).put("message", buildDeployServiceImpl.getOutput());
+		
+		return new ResponseEntity<JsonNode>(childNode1, HttpStatus.OK);
+	}
 	
 	
 	
 	
 	@GetMapping(path = "/table", produces = "application/json")
 	public ResponseEntity<List<String>> register() throws IOException, SQLException {
-		
 		return new ResponseEntity<List<String>>(tableDaoImpl.getAllTableName("TST_%"), HttpStatus.OK);
 	}
 

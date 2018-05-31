@@ -297,7 +297,7 @@ public class DBRestCodeWriter extends CodeWriter{
 				"		try {\r\n" + 
 				"			conn = getConnection();\r\n" + 
 				"			entity.remove(primaryKey);\r\n" + 
-				"			entity.put(primaryKey, getRandomPrimaryKey());\r\n" + 
+				"			entity.put(primaryKey, getNextNo(conn, tableName, primaryKey, primaryKey));\r\n" + 
 				"			String sql = prepareQuery(tableName, primaryKey, entity);\r\n" + 
 				"			System.out.println(sql);\r\n" + 
 				"			PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);\r\n" + 

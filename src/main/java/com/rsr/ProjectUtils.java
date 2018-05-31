@@ -1,7 +1,7 @@
 package com.rsr;
 
-import static com.rsr.ServiceConstants.SRC_DIR;
 import static com.rsr.ServiceConstants.DEST_DIR;
+import static com.rsr.ServiceConstants.SRC_DIR;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -72,5 +72,6 @@ public class ProjectUtils
 			//System.out.println("File copied from " + src + " to " + dest);
 		}
 	}
+	
 
 }

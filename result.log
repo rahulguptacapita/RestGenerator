@@ -1,0 +1,64 @@
+
+C:\assignment\workspace\RestGenerator>SET JAVA_HOME="C:\Progra~1\Java\jdk1.8.0_161" 
+
+C:\assignment\workspace\RestGenerator>cd C:\assignment\workspace\RestGenerator\output\TST100 
+
+C:\assignment\workspace\RestGenerator\output\TST100>mvn clean install 
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.rsr:TST100:war:1.0-SNAPSHOT
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ line 88, column 12
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Building RestGenerator Generated App 1.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[WARNING] The POM for com.sun.xml.bind:jaxb-impl:jar:2.2.3-1 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ TST100 ---
+[INFO] Deleting C:\assignment\workspace\RestGenerator\output\TST100\target
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ TST100 ---
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent!
+[INFO] Copying 0 resource
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.1:compile (default-compile) @ TST100 ---
+[INFO] Changes detected - recompiling the module!
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent!
+[INFO] Compiling 19 source files to C:\assignment\workspace\RestGenerator\output\TST100\target\classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/assignment/workspace/RestGenerator/output/TST100/src/main/java/com/rsr/entity/TstClaimHeaderEntity.java:[197,27] method getEntity(java.lang.String,java.lang.String) is already defined in class com.rsr.entity.TstClaimHeaderEntity
+[ERROR] /C:/assignment/workspace/RestGenerator/output/TST100/src/main/java/com/rsr/entity/TstClaimGlcodeEntity.java:[197,27] method getEntity(java.lang.String,java.lang.String) is already defined in class com.rsr.entity.TstClaimGlcodeEntity
+[ERROR] /C:/assignment/workspace/RestGenerator/output/TST100/src/main/java/com/rsr/entity/TstClaimLineEntity.java:[197,27] method getEntity(java.lang.String,java.lang.String) is already defined in class com.rsr.entity.TstClaimLineEntity
+[ERROR] /C:/assignment/workspace/RestGenerator/output/TST100/src/main/java/com/rsr/entity/TstClaimHeaderEntity.java:[32,8] com.rsr.entity.TstClaimHeaderEntity is not abstract and does not override abstract method deleteEntity(java.lang.String,java.lang.String) in com.rsr.entity.DBEntity
+[ERROR] /C:/assignment/workspace/RestGenerator/output/TST100/src/main/java/com/rsr/entity/TstClaimGlcodeEntity.java:[32,8] com.rsr.entity.TstClaimGlcodeEntity is not abstract and does not override abstract method deleteEntity(java.lang.String,java.lang.String) in com.rsr.entity.DBEntity
+[ERROR] /C:/assignment/workspace/RestGenerator/output/TST100/src/main/java/com/rsr/entity/TstClaimLineEntity.java:[32,8] com.rsr.entity.TstClaimLineEntity is not abstract and does not override abstract method deleteEntity(java.lang.String,java.lang.String) in com.rsr.entity.DBEntity
+[INFO] 6 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 4.453 s
+[INFO] Finished at: 2018-05-31T14:01:08+05:30
+[INFO] Final Memory: 16M/376M
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.1:compile (default-compile) on project TST100: Compilation failure: Compilation failure: 
+[ERROR] /C:/assignment/workspace/RestGenerator/output/TST100/src/main/java/com/rsr/entity/TstClaimHeaderEntity.java:[197,27] method getEntity(java.lang.String,java.lang.String) is already defined in class com.rsr.entity.TstClaimHeaderEntity
+[ERROR] /C:/assignment/workspace/RestGenerator/output/TST100/src/main/java/com/rsr/entity/TstClaimGlcodeEntity.java:[197,27] method getEntity(java.lang.String,java.lang.String) is already defined in class com.rsr.entity.TstClaimGlcodeEntity
+[ERROR] /C:/assignment/workspace/RestGenerator/output/TST100/src/main/java/com/rsr/entity/TstClaimLineEntity.java:[197,27] method getEntity(java.lang.String,java.lang.String) is already defined in class com.rsr.entity.TstClaimLineEntity
+[ERROR] /C:/assignment/workspace/RestGenerator/output/TST100/src/main/java/com/rsr/entity/TstClaimHeaderEntity.java:[32,8] com.rsr.entity.TstClaimHeaderEntity is not abstract and does not override abstract method deleteEntity(java.lang.String,java.lang.String) in com.rsr.entity.DBEntity
+[ERROR] /C:/assignment/workspace/RestGenerator/output/TST100/src/main/java/com/rsr/entity/TstClaimGlcodeEntity.java:[32,8] com.rsr.entity.TstClaimGlcodeEntity is not abstract and does not override abstract method deleteEntity(java.lang.String,java.lang.String) in com.rsr.entity.DBEntity
+[ERROR] /C:/assignment/workspace/RestGenerator/output/TST100/src/main/java/com/rsr/entity/TstClaimLineEntity.java:[32,8] com.rsr.entity.TstClaimLineEntity is not abstract and does not override abstract method deleteEntity(java.lang.String,java.lang.String) in com.rsr.entity.DBEntity
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

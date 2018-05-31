@@ -90,19 +90,33 @@
 			</p>
 
 
-			<p class="text-success">	
-				Select Methods : <div ng-repeat="x in themes">
-				<label><input type="checkbox"
+			<p class="text-success" >	
+				Select Methods : <div ng-repeat="x in themes" >
+				<label ><input type="checkbox"
 					ng-model="methods.selected[x]"
 					ng-true-value="'{{x}}'" ng-false-value="''"/>{{x}}</label>
 			</div>
 			</p>
 
-			<br />
+			<!-- <br /> -->
 			<!-- <h1 class="header">Online Compiler</h1> -->
 			<textarea id="myTextArea" style="display: none;"></textarea>
+								
+			
 			<button class="btn btn-success" ng-disabled="isDisabled"
 				ng-click="myfunc()">Generate Code</button>
+
+
+			<button class="btn btn-success" ng-disabled="buildDisabled"
+				ng-click="myBuildFunc()">Build And Deploy Code {{buildCodePath}}</button>
+				
+
+				<div class="row">
+					<div class="col-sm-12 col-md-12" style="background-color: yellow;">
+						<h4>LOGS</h4>
+						<span class="donotwrapexecute bg-info" ng-model="logs"> {{logs}}</span>
+					</div>
+				</div>
 
 			<!-- <div class="row">
 				<div class="col-sm-9 col-md-6" style="background-color: yellow;">
