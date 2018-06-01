@@ -1,7 +1,6 @@
 package com.rsr;
 
 import static com.rsr.ServiceConstants.DEST_DIR;
-import static com.rsr.ServiceConstants.SRC_DIR;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,9 +12,9 @@ import java.io.OutputStream;
 public class ProjectUtils
 {
 	
-	public static void copyProjectTemplate(String projectName) {
+	public static void copyProjectTemplate(String srcDir, String projectName) {
 		
-		File srcFolder = new File(SRC_DIR);
+		File srcFolder = new File(srcDir);
 		File destFolder = new File(DEST_DIR + projectName);
 		// make sure source exists
 

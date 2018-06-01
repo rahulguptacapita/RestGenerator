@@ -25,7 +25,23 @@ public class Request {
 
     @JsonProperty("projectname")
     private String projectname;
-    @JsonProperty("tables")
+    
+    @JsonProperty("testprojectname")
+    private String testprojectname;
+    
+    
+    
+    @JsonProperty("testprojectname")
+    public String getTestprojectname() {
+		return testprojectname;
+	}
+
+    @JsonProperty("testprojectname")
+	public void setTestprojectname(String testprojectname) {
+		this.testprojectname = testprojectname;
+	}
+
+	@JsonProperty("tables")
     private List<Table> tables = null;
     
     @JsonProperty("projectpath")
@@ -100,6 +116,7 @@ public class Request {
 	}
 
 	public void enrichRequest(TableDaoImpl tableDaoImpl) throws SQLException {
+		setTestprojectname(getProjectname() + "Test");
 		setProjectPath();
 		for (Table table : getTables()) {
 			table.setPrimaryKey(tableDaoImpl);

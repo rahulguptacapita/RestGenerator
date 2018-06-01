@@ -1,5 +1,8 @@
 package com.rsr;
 
+import static com.rsr.ServiceConstants.SRC_DIR_DEV;
+import static com.rsr.ServiceConstants.SRC_DIR_TEST;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -18,10 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.rsr.domain.Request;
 import com.rsr.service.CodeWriterServiceImpl;
-import com.rsr.service.builddeploy.BuildDeployService;
 import com.rsr.service.builddeploy.BuildDeployServiceExec;
 import com.rsr.service.builddeploy.BuildDeployServiceImpl;
-
 @RestController
 public class Controller {
 
@@ -40,9 +41,13 @@ public class Controller {
 		
 		request.enrichRequest(tableDaoImpl);
 		
-		ProjectUtils.copyProjectTemplate(request.getProjectname());
+		ProjectUtils.copyProjectTemplate(SRC_DIR_DEV, request.getProjectname());
+
+		ProjectUtils.copyProjectTemplate(SRC_DIR_TEST,request.getTestprojectname());
 		
-		writerServiceImpl.writeCode(request);
+		writerServiceImpl.writeDevCode(request);
+
+		writerServiceImpl.writeTestCode(request);
 			
 		return new ResponseEntity<Request>(request, HttpStatus.OK);
 	}
@@ -71,14 +76,6 @@ public class Controller {
 			return null; 
 		}
 		
-	//	System.out.println(buildDeployServiceImpl.getOutput());
-	//	JSONObject jObjec = new JSONObject().put("message", "hello");
-	//	jObjec.put("message", buildDeployServiceImpl.getOutput());
-		
-	//	String br = "{";
-		
-		// System.out.println(br + "\"message\":"  + "\"" + buildDeployServiceImpl.getOutput() + "\"}");
-		
 		ObjectMapper mapper = new ObjectMapper();
 
 		JsonNode childNode1 = mapper.createObjectNode();
@@ -87,14 +84,9 @@ public class Controller {
 		return new ResponseEntity<JsonNode>(childNode1, HttpStatus.OK);
 	}
 	
-	
-	
-	
 	@GetMapping(path = "/table", produces = "application/json")
 	public ResponseEntity<List<String>> register() throws IOException, SQLException {
 		return new ResponseEntity<List<String>>(tableDaoImpl.getAllTableName("TST_%"), HttpStatus.OK);
 	}
-
-	
 
 }
