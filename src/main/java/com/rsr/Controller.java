@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.rsr.domain.Request;
 import com.rsr.service.CodeWriterServiceImpl;
+import com.rsr.service.ProjectService;
 import com.rsr.service.builddeploy.BuildDeployServiceExec;
 import com.rsr.service.builddeploy.BuildDeployServiceImpl;
 @RestController
@@ -48,6 +49,12 @@ public class Controller {
 		writerServiceImpl.writeDevCode(request);
 
 		writerServiceImpl.writeTestCode(request);
+		
+		
+		ProjectService service = new ProjectService(ServiceConstants.DEST_DIR, request.getProjectname());
+		service.initiateProject(); 
+		
+		
 			
 		return new ResponseEntity<Request>(request, HttpStatus.OK);
 	}

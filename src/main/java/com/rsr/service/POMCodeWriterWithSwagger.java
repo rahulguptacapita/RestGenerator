@@ -118,33 +118,37 @@ public class POMCodeWriterWithSwagger extends CodeWriter  {
 				"	</pluginRepositories>\r\n" + 
 				"\r\n" + 
 				"\r\n" + 
-				"	<build>\r\n" + 
-				"		<finalName>"+projectName+"</finalName>\r\n" + 
-				"		<plugins>\r\n" + 
-				"			<plugin>\r\n" + 
-				"				<artifactId>maven-compiler-plugin</artifactId>\r\n" + 
-				"				<configuration>\r\n" + 
-				"					<source>1.7</source>\r\n" + 
-				"					<target>1.7</target>\r\n" + 
-				"				</configuration>\r\n" + 
-				"			</plugin>\r\n" + 
-				"			<plugin>\r\n" + 
-				"				<groupId>com.sebastian-daschner</groupId>\r\n" + 
-				"				<artifactId>jaxrs-analyzer-maven-plugin</artifactId>\r\n" + 
-				"				<version>0.13</version>\r\n" + 
-				"				<executions>\r\n" + 
-				"					<execution>\r\n" + 
-				"						<goals>\r\n" + 
-				"							<goal>analyze-jaxrs</goal>\r\n" + 
-				"						</goals>\r\n" + 
-				"					</execution>\r\n" + 
-				"				</executions>\r\n" + 
-				"				<configuration>\r\n" + 
-				"					<backend>swagger</backend>\r\n" + 
-				"				</configuration>\r\n" + 
-				"			</plugin>\r\n" + 
-				"		</plugins>\r\n" + 
-				"\r\n" + 
+				"	<build>\r\n" +
+				"	<finalName>${project.artifactId}-${project.version}</finalName>\r\n" + 
+				"							<plugins>\r\n" + 
+				"								<plugin>\r\n" + 
+				"									<groupId>org.apache.tomcat.maven</groupId>\r\n" + 
+				"									<artifactId>tomcat7-maven-plugin</artifactId>\r\n" + 
+				"									<version>2.2</version>\r\n" + 
+				"								</plugin>\r\n" + 
+				"								<plugin>\r\n" + 
+				"									<artifactId>maven-compiler-plugin</artifactId>\r\n" + 
+				"									<configuration>\r\n" + 
+				"										<source>1.8</source>\r\n" + 
+				"										<target>1.8</target>\r\n" + 
+				"									</configuration>\r\n" + 
+				"								</plugin>\r\n" + 
+				"								<plugin>\r\n" + 
+				"									<groupId>com.sebastian-daschner</groupId>\r\n" + 
+				"									<artifactId>jaxrs-analyzer-maven-plugin</artifactId>\r\n" + 
+				"									<version>0.13</version>\r\n" + 
+				"									<executions>\r\n" + 
+				"										<execution>\r\n" + 
+				"											<goals>\r\n" + 
+				"												<goal>analyze-jaxrs</goal>\r\n" + 
+				"											</goals>\r\n" + 
+				"										</execution>\r\n" + 
+				"									</executions>\r\n" + 
+				"									<configuration>\r\n" + 
+				"										<backend>swagger</backend>\r\n" + 
+				"									</configuration>\r\n" + 
+				"								</plugin>\r\n" + 
+				"							</plugins>\r\n" +
 				"	</build>\r\n" + 
 				"\r\n" + 
 				"</project>");
