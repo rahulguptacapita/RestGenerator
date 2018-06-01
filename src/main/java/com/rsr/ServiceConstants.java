@@ -13,6 +13,8 @@ public class ServiceConstants {
 	public final static String TEST_RSR_DIR = "\\src\\test\\java\\com\\rsr";
 
 	public final static String TEST_TEST_DIR = "\\src\\test\\java\\stepDefination";
+	
+	public final static String TEST_CUKES_DIR = "\\src\\test\\java\\org\\testingworld\\automation\\testcase\\";
 
 	public final static String TEST_CONFIG_DIR = "\\src\\test\\resources\\config";
 	

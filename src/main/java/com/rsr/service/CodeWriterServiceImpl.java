@@ -36,17 +36,26 @@ public class CodeWriterServiceImpl {
 
 	public void writeTestCode(Request request) {
 		
+		String featureFileName = "";
 		
 		for (Table table : request.getTables()) {
+		
 			CodeWriter stepDefinationCodeWriter = new StepDefinationCodeWriter(table, request.getTestprojectname());
 			stepDefinationCodeWriter.writeCode();
 			
-			CodeWriter restCodeWriter = new FeatureCodeWriter(table, request.getTestprojectname());
-			restCodeWriter.writeCode();
+			CodeWriter featureCodeWriter = new FeatureCodeWriter(table, request.getTestprojectname());
+			featureCodeWriter.writeCode();
+			
+			featureFileName = featureCodeWriter.getClassName() + ".feature";
+			
 			
 			CodeWriter testPomCodeWriter = new TestPOMCodeWriter(request.getTestprojectname());
 			testPomCodeWriter.writeCode();
+			
 		}
+	
+		CodeWriter cukesCodeWriter = new CukesCodeWriter(featureFileName, request.getTestprojectname());
+		cukesCodeWriter.writeCode();
 	
 	}
 }
