@@ -10,8 +10,11 @@ import com.rsr.domain.Table;
 
 public class StepDefinationCodeWriter extends CodeWriter {
 
-	public StepDefinationCodeWriter(Table table, String projectName) {
+	private String devProjectName;
+
+	public StepDefinationCodeWriter(Table table, String projectName, String devProjectName) {
 		super(table, projectName);
+		this.devProjectName = devProjectName;
 	}
 
 	// C:\kipo\exsample\ExtentWorkingwidMP\Reporting\src\test\java\stepDefination
@@ -57,7 +60,7 @@ public class StepDefinationCodeWriter extends CodeWriter {
 	public void writeVariables() {
 		
 		pr.println("private static final String RESTPATH = \""+ table.getRestPath() + "\";\r\n" + 
-				"	private static final String BASEURL = \"http://localhost:8080/"+ projectName +"/rest/\";"
+				"	private static final String BASEURL = \"http://localhost:8080/"+ devProjectName +"/rest/\";"
 				+ "private static final String ID = \"\";");
 	}
 

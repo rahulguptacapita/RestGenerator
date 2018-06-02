@@ -50,12 +50,12 @@ public class Controller {
 
 		writerServiceImpl.writeTestCode(request);
 		
-		
 		ProjectService service = new ProjectService(ServiceConstants.DEST_DIR, request.getProjectname());
 		service.initiateProject(); 
+
+		ProjectService serviceOne = new ProjectService(ServiceConstants.DEST_DIR, request.getTestprojectname());
+		serviceOne.initiateProject(); 
 		
-		
-			
 		return new ResponseEntity<Request>(request, HttpStatus.OK);
 	}
 	

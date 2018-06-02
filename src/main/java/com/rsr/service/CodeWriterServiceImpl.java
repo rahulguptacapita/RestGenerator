@@ -1,5 +1,8 @@
 package com.rsr.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 import com.rsr.domain.Request;
 import com.rsr.domain.Table;
@@ -38,10 +41,15 @@ public class CodeWriterServiceImpl {
 		
 		String featureFileName = "";
 		
+		List<String> listOfStepDef = new ArrayList<String>();
+		
+		
 		for (Table table : request.getTables()) {
 		
-			CodeWriter stepDefinationCodeWriter = new StepDefinationCodeWriter(table, request.getTestprojectname());
+			CodeWriter stepDefinationCodeWriter = new StepDefinationCodeWriter(table, request.getTestprojectname(), request.getProjectname());
 			stepDefinationCodeWriter.writeCode();
+			
+			listOfStepDef.add("stepDefination." + stepDefinationCodeWriter.getClassName());
 			
 			CodeWriter featureCodeWriter = new FeatureCodeWriter(table, request.getTestprojectname());
 			featureCodeWriter.writeCode();
@@ -49,16 +57,21 @@ public class CodeWriterServiceImpl {
 			featureFileName = featureCodeWriter.getClassName() + ".feature";
 			
 			
-			CodeWriter testPomCodeWriter = new TestPOMCodeWriter(request.getTestprojectname());
-			testPomCodeWriter.writeCode();
-			
 		}
-	
+		
+		CodeWriter testPomCodeWriter = new TestPOMCodeWriter(request.getTestprojectname());
+		testPomCodeWriter.writeCode();
+		
+		
+	// >mvn -Dtest=stepDefination.MspEmployerTestsStepDefinitions test
 		CodeWriter cukesCodeWriter = new CukesCodeWriter(featureFileName, request.getTestprojectname());
 		cukesCodeWriter.writeCode();
-	
+		
+		
+		CodeWriter runMeTestWriter = new RunMeTestCodeWriter(request.getTestprojectname(), listOfStepDef);
+		runMeTestWriter.writeCode();
+		
+		
+		
 	}
-	
-	
-	
 }

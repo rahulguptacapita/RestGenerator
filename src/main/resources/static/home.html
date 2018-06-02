@@ -1,81 +1,96 @@
 <!DOCTYPE html>
 <html lang="en-US">
+
 <head>
-<title>AUTOREST</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="shortcut icon" href="favicon.ico">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<title>AUTOREST</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 
 
-<script src="customcodemirror.js"></script>
-<script src="cacheapicall.js"></script>
-<script src="home.js"></script>
-<script src="apiutils.js"></script>
-<style type="text/css">
-.header {
-	background-color: grey;
-	color: #ffffff;
-	padding: 0.5%;
-	
-}
-.h2, h2 {
-    font-size: px;
-}
+	<script src="customcodemirror.js"></script>
+	<script src="cacheapicall.js"></script>
+	<script src="home.js"></script>
+	<script src="apiutils.js"></script>
+	<style type="text/css">
+		.header {
+			background-color: #3498DB;
+			color: #ffffff;
+			padding: 0.5%;
+			margin: 0px 0 20px 0;
+		}
+		.text-success{
+			color: #1C2833;
+			font-size: 16px;
+		}
+		.header-text {
+			font-weight: bold;
+		}
 
-* {
-	box-sizing: border-box;
-}
+		.h2,
+		h2 {
+			font-size: px;
+		}
 
-.CodeMirror {
-	border-top: 1px solid #888;
-	border-bottom: 1px solid #888;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	width: 100%;
-	float: left;
-	height: auto;
-}
+		* {
+			box-sizing: border-box;
+		}
 
-.compile {
-	width: 50%;
-	float: left;
-}
+		.CodeMirror {
+			border-top: 1px solid #888;
+			border-bottom: 1px solid #888;
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+			width: 100%;
+			float: left;
+			height: auto;
+		}
 
-.execute {
-	width: 50%, float: right;
-}
+		.compile {
+			width: 50%;
+			float: left;
+		}
 
-.donotwrapcompile {
-	white-space: pre-line;
-}
+		.execute {
+			width: 50%, float: right;
+		}
 
-.donotwrapexecute {
-	white-space: pre-line;
-}
-</style>
+		.donotwrapcompile {
+			white-space: pre-line;
+		}
+
+		.donotwrapexecute {
+			white-space: pre-line;
+		}
+		.input-text{
+			width: 40%;
+			display: inline;
+		}
+		.form-font{
+			font-size: 16px;
+		}
+	</style>
 </head>
+
 <body>
-	<div ng-app="myapp" class="container-fluid">
+	<div class="page-header header text-center">
+		<h2 class="header-text">AUTOREST</h2>
+	</div>
+
+	<div ng-app="myapp" class="container">
 		<!-- id="outer" is very imp please do not remove it  -->
 		<div id="outer" ng-controller="HelloController">
-			<div class="page-header header text-center">
-				<h2>AUTOREST</h2>
+			<div class="row form-group">
+				<label class="text-success col-4">
+					Project :
+				</label>
+				<input name="projectname" id="projectname" ng-model="projectname" class="form-control input-text">
 			</div>
-
-			<p class="text-success">
-				Project : <input name="projectname" id="projectname"
-					ng-model="projectname">
-			</p>
-
 
 			<!-- <p class="text-success">
 				Select Table : <select ng-model="selectedLanguage"
@@ -84,32 +99,30 @@
 					<option ng-repeat="x in languages" value="{{x}}">{{x}}</option>
 				</select> 
 			</p> -->
-
-			<p class="text-success">	
-				Select Data Entity : <div ng-repeat="x in languages">
-				<label><input type="checkbox"
-					ng-model="languagesSel.selected[x]"
-					ng-true-value="'{{x}}'" ng-false-value="''"/>{{x}}</label>
+			<div class="row form-group">
+			<label class="text-success">
+				Select Data Entity :
+			</label>
+				<div ng-repeat="x in languages">
+						<input type="checkbox" ng-model="languagesSel.selected[x]" ng-true-value="'{{x}}'" ng-false-value="''" />{{x}}
+				</div>
 			</div>
-			</p>
 
-
-			<p class="text-success" >	
-				Select API Methods : <div ng-repeat="x in themes" >
-				<label ><input type="checkbox"
-					ng-model="methods.selected[x]"
-					ng-true-value="'{{x}}'" ng-false-value="''"/>{{x}}</label>
+			<div class="row form-group">
+			<label class="text-success">
+				Select API Methods :
+			</label>
+				<div ng-repeat="x in themes">
+					<input type="checkbox" ng-model="methods.selected[x]" ng-true-value="'{{x}}'" ng-false-value="''" />{{x}}
+				</div>
 			</div>
-			</p>
-
 			<!-- <br /> -->
 			<!-- <h1 class="header">Online Compiler</h1> -->
 			<textarea id="myTextArea" style="display: none;"></textarea>
-								
-			
-			<button class="btn btn-success" ng-disabled="isDisabled"
-				ng-click="myfunc()">Generate Code</button>
 
+			<div class="row form-group">
+				<button class="btn btn-primary form-font" ng-disabled="isDisabled" ng-click="myfunc()">Generate Code</button>
+			</div>
 
 			<!-- <button class="btn btn-success" ng-disabled="buildDisabled"
 				ng-click="myBuildFunc()">Build And Deploy Code {{buildCodePath}}</button>
@@ -142,4 +155,5 @@
 			</div> -->
 		</div>
 </body>
+
 </html>
